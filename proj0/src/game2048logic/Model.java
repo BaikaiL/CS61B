@@ -85,6 +85,13 @@ public class Model {
      * */
     public boolean emptySpaceExists() {
         // TODO: Task 2. Fill in this function.
+        for(int i = 0; i < board.size(); i++){
+            for(int j = 0; j < board.size(); j++){
+                if(board.tile(i, j) == null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -95,6 +102,13 @@ public class Model {
      */
     public boolean maxTileExists() {
         // TODO: Task 3. Fill in this function.
+        for(int i = 0; i < board.size(); i++){
+            for(int j = 0; j < board.size(); j++){
+                if( board.tile(i,j)!= null && board.tile(i, j).value() == MAX_PIECE){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -106,6 +120,27 @@ public class Model {
      */
     public boolean atLeastOneMoveExists() {
         // TODO: Fill in this function.
+        // 情况1.有空瓷砖存在
+        if(emptySpaceExists()){
+            return true;
+        }
+        // 情况2.在某个瓷砖的同一行或者同一列有相同的数字可以合并
+        // 检查同一行的是否有可以合并的
+        for(int i = 0; i < board.size(); i++){
+            for(int j = 0; j < board.size()-1; j++){
+                if(board.tile(i,j).value() == board.tile(i,j+1).value()){
+                    return true;
+                }
+            }
+        }
+        // 检查同一列的是否可以合并
+        for(int j = 0; j < board.size(); j++){
+            for(int k = 0; k < board.size()-1; k++){
+                if (board.tile(k,j).value() == board.tile(k+1,j).value()){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -127,6 +162,19 @@ public class Model {
         Tile currTile = board.tile(x, y);
         int myValue = currTile.value();
         int targetY = y;
+        while(targetY < 3){
+            if(board.tile(x, targetY+1) == null){
+                targetY++;
+            }
+            else if(board.tile(x, targetY+1).value() == myValue){
+                targetY++;
+                break;
+            }
+            else{
+                break;
+            }
+        }
+        board.move(x,targetY,currTile);
 
         // TODO: Tasks 5, 6, and 10. Fill in this function.
     }
