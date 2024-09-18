@@ -3,6 +3,7 @@ package game2048logic;
 import game2048rendering.Board;
 import game2048rendering.Side;
 import game2048rendering.Tile;
+import org.objectweb.asm.tree.IntInsnNode;
 
 import java.util.Formatter;
 
@@ -162,19 +163,26 @@ public class Model {
         Tile currTile = board.tile(x, y);
         int myValue = currTile.value();
         int targetY = y;
-        while(targetY < 3){
+        while(targetY < board.size()-1){
+            // 上方没有tile
             if(board.tile(x, targetY+1) == null){
                 targetY++;
             }
-            else if(board.tile(x, targetY+1).value() == myValue){
+            // 上方有tile，但是值相同
+            else if((board.tile(x, targetY+1).value() == myValue) && !(board.tile(x, targetY+1).wasMerged())){
                 targetY++;
+                score += 2*myValue;
                 break;
             }
+            // 上方有tile，但值不同
             else{
                 break;
             }
         }
-        board.move(x,targetY,currTile);
+        if(targetY != y){
+            board.move(x,targetY,currTile);
+        }
+
 
         // TODO: Tasks 5, 6, and 10. Fill in this function.
     }
@@ -186,10 +194,21 @@ public class Model {
      * */
     public void tiltColumn(int x) {
         // TODO: Task 7. Fill in this function.
+        for(int i = board.size()-1; i >= 0; i--){
+            if(board.tile(x,i) != null){
+                moveTileUpAsFarAsPossible(x,i);
+            }
+
+        }
     }
 
     public void tilt(Side side) {
         // TODO: Tasks 8 and 9. Fill in this function.
+        board.setViewingPerspective(side);
+        for(int i = 0; i < board.size(); i++){
+            tiltColumn(i);
+        }
+        board.setViewingPerspective(Side.NORTH);
     }
 
     /** Tilts every column of the board toward SIDE.
