@@ -78,11 +78,12 @@ public class MachineStage implements AdventureStage {
     }
 
     public static int mysteryMax(int a, int b) {
-        int w = (b - a) >> 31;
-        int z = ~(b - a) >> 31;
-
-        int max = b & w | a & z;
-        return max;
+//        int w = (b - a) >> 31;
+//        int z = ~(b - a) >> 31;
+//
+//        int max = b & w | a & z;
+//        return max;
+        return a > b ? a : b;
     }
 
     public static int mysteryAdd(int a, int b) {
@@ -126,7 +127,8 @@ public class MachineStage implements AdventureStage {
         int i = 0;
         int sum = 0;
         while (i < x.length) {
-            sum = sum + mysteryAdd(sum, x[i]);
+            // sum = sum + mysteryAdd(sum,x[i]) -> sum = mysteryAdd(sum,x[i])
+            sum = mysteryAdd(sum, x[i]);
             i = i + 1;
         }
         return sum;

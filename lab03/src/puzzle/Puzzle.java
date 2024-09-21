@@ -64,6 +64,7 @@ public class Puzzle {
                 Replace the first line of `answer.txt` accordingly.
                 Hint: Use an exception breakpoint.""");
         while (r.nextInt(100) != 10) {
+            // 设置异常断点，断点触发的guessthis就是answer
             guessThis += r.nextInt();
             s = LOTS_OF_STRINGS[r.nextInt(LOTS_OF_STRINGS.length + 1)];
         }
