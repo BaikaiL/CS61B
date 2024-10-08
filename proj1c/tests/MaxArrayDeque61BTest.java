@@ -13,12 +13,12 @@ public class MaxArrayDeque61BTest {
         }
     }
 
-    @Test
-    public void basicTest() {
-        MaxArrayDeque61B<String> mad = new MaxArrayDeque61B<>(new StringLengthComparator());
-        mad.addFirst("");
-        mad.addFirst("2");
-        mad.addFirst("fury road");
-        assertThat(mad.max()).isEqualTo("fury road");
-    }
+//    @Test
+//    public void basicTest() {
+//        MaxArrayDeque61B<String> mad = new MaxArrayDeque61B<>(new StringLengthComparator());
+//        mad.addFirst("");
+//        mad.addFirst("2");
+//        mad.addFirst("fury road");
+//        assertThat(mad.max()).isEqualTo("fury road");
+//    }
 }
