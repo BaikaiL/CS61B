@@ -1,4 +1,6 @@
 package deque;
+import org.apache.commons.collections.collection.AbstractCollectionDecorator;
+
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -136,5 +138,30 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
 			current = current.next;
 			return data;
 		}
+	}
+
+	public boolean contains(T x) {
+		for(Node node = sentinel.next; node != sentinel; node = node.next) {
+			if(node.data.equals(x)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof LinkedListDeque61B olld) {
+			if(this.size() != olld.size()) {
+				return false;
+			}
+			for(T x : this){
+				if(!olld.contains(x)){
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 }

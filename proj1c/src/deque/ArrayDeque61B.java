@@ -1,5 +1,4 @@
 package deque;
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -155,4 +154,30 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 			return tmp;
 		}
 	}
+
+	public boolean contains(T x) {
+		int index = Math.floorMod(nextFirst+1, items.length);
+		for(int i = 0; i < size; i++) {
+			if(items[index].equals(x)) return true;
+			index = Math.floorMod(index+1, items.length);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof ArrayDeque61B ado) {
+			if(this.size() != ado.size()) {
+				return false;
+			}
+			for(T x : this){
+				if(!ado.contains(x)){
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 }
+
