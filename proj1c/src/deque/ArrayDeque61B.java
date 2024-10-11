@@ -1,9 +1,6 @@
 package deque;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.lang.Math;
-import java.util.NoSuchElementException;
 
 public class ArrayDeque61B<T> implements Deque61B<T> {
 	private T[] items;
@@ -178,6 +175,11 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return toList().toString();
 	}
 }
 
