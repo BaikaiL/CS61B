@@ -78,11 +78,66 @@ public class PercolationTest {
         assertThat(p.percolates()).isTrue();
     }
 
-    // TODO: Using the given tests above as a template,
-    //       write some more tests and delete the fail() line
+
     @Test
     public void yourFirstTestHere() {
-        fail("Did you write your own tests?");
+        int N = 5;
+        Percolation p = new Percolation(N);
+        // open sites at (r, c) = (0, 1), (2, 0), (3, 1), etc. (0, 0) is top-left
+        int[][] openSites = {
+                {0,0},
+                {0,1},
+                {1,1},
+                {1,2},
+                {2,0},
+                {2,2},
+                {3,2},
+                {4,2},
+                {2,4}
+        };
+        Cell[][] expectedState = {
+                {Cell.FULL, Cell.FULL, Cell.CLOSED, Cell.CLOSED, Cell.CLOSED},
+                {Cell.CLOSED, Cell.FULL, Cell.FULL, Cell.CLOSED, Cell.CLOSED},
+                {Cell.OPEN, Cell.CLOSED, Cell.FULL, Cell.CLOSED, Cell.OPEN},
+                {Cell.CLOSED, Cell.CLOSED, Cell.FULL, Cell.CLOSED, Cell.CLOSED},
+                {Cell.CLOSED, Cell.CLOSED, Cell.FULL, Cell.CLOSED, Cell.CLOSED}
+        };
+        for (int[] site : openSites) {
+            p.open(site[0], site[1]);
+        }
+        assertThat(getState(N, p)).isEqualTo(expectedState);
+        assertThat(p.percolates()).isTrue();
+    }
+
+    @Test
+    public void TestSecond(){
+        int N = 5;
+        Percolation p = new Percolation(N);
+        // open sites at (r, c) = (0, 1), (2, 0), (3, 1), etc. (0, 0) is top-left
+        int[][] openSites = {
+                {0,0},
+                {0,1},
+                {1,1},
+                {1,2},
+                {2,0},
+                {2,2},
+                {3,2},
+                {4,2},
+                {2,4},
+                {4,4}
+        };
+        Cell[][] expectedState = {
+                {Cell.FULL, Cell.FULL, Cell.CLOSED, Cell.CLOSED, Cell.CLOSED},
+                {Cell.CLOSED, Cell.FULL, Cell.FULL, Cell.CLOSED, Cell.CLOSED},
+                {Cell.OPEN, Cell.CLOSED, Cell.FULL, Cell.CLOSED, Cell.OPEN},
+                {Cell.CLOSED, Cell.CLOSED, Cell.FULL, Cell.CLOSED, Cell.CLOSED},
+                {Cell.CLOSED, Cell.CLOSED, Cell.FULL, Cell.CLOSED, Cell.OPEN}
+        };
+        for (int[] site : openSites) {
+            p.open(site[0], site[1]);
+        }
+        assertThat(getState(N, p)).isEqualTo(expectedState);
+        assertThat(p.percolates()).isTrue();
     }
 
 }
