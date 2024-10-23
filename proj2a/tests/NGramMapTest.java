@@ -73,4 +73,9 @@ public class NGramMapTest {
         assertThat(fishPlusDogWeight.get(1865)).isWithin(1E-10).of(expectedFishPlusDogWeight1865);
     }
 
+    @Test
+    public void testOpenFile(){
+        NGramMap ngm = new NGramMap(SHORT_WORDS_FILE, TOTAL_COUNTS_FILE);
+    }
+
 }  

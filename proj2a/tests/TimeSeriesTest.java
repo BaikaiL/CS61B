@@ -1,3 +1,4 @@
+import net.sf.saxon.expr.TryCatch;
 import ngrams.TimeSeries;
 
 import org.junit.jupiter.api.Test;
@@ -54,5 +55,52 @@ public class TimeSeriesTest {
 
         assertThat(totalPopulation.years()).isEmpty();
         assertThat(totalPopulation.data()).isEmpty();
+    }
+
+    @Test
+    public void testDivideBy(){
+        TimeSeries catPopulation = new TimeSeries();
+        catPopulation.put(1991, 0.0);
+        catPopulation.put(1992, 100.0);
+        catPopulation.put(1994, 200.0);
+        catPopulation.put(1995, 250.0);
+
+        TimeSeries dogPopulation = new TimeSeries();
+        dogPopulation.put(1994, 400.0);
+        dogPopulation.put(1995, 500.0);
+
+        TimeSeries totalPopulation = dogPopulation.dividedBy(catPopulation);
+
+        List<Integer> expectedYears = new ArrayList<>
+                (Arrays.asList(1994,1995));
+
+        assertThat(totalPopulation.years()).isEqualTo(expectedYears);
+
+        List<Double> expectedTotal = new ArrayList<>
+                (Arrays.asList(2.0,2.0));
+
+        for (int i = 0; i < expectedTotal.size(); i += 1) {
+            assertThat(totalPopulation.data().get(i)).isWithin(1E-10).of(expectedTotal.get(i));
+        }
+
+    }
+
+    @Test
+    public void testDivideBy2(){
+        TimeSeries catPopulation = new TimeSeries();
+        catPopulation.put(1991, 0.0);
+        catPopulation.put(1992, 100.0);
+        catPopulation.put(1994, 200.0);
+        catPopulation.put(1995, 250.0);
+
+        TimeSeries dogPopulation = new TimeSeries();
+        dogPopulation.put(1994, 400.0);
+        dogPopulation.put(1995, 500.0);
+
+        try {
+            TimeSeries totalPopulation = catPopulation.dividedBy(dogPopulation);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 } 
