@@ -2,10 +2,7 @@ package hashmap;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 /**
  *  A hash table-backed Map implementation.
@@ -130,8 +127,33 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private Collection<Node>[] resizeBuckets(int newSize){
+        // 创建一个新的buckets，并初始化
+        Collection[] ArrayBuckets = new Collection[newSize];
+        for (int i = 0; i < newSize; i++) {
+            ArrayBuckets[i] = createBucket();
+        }
+
+        // 将原buckets的Node重新分配到新的buckets
+        for(int i = 0; i < initialCapacity; i++) {
+            for(Node node : buckets[i]) {
+                int indexBucket = Math.floorMod(node.key.hashCode(), ArrayBuckets.length);
+                ArrayBuckets[indexBucket].add(node);
+            }
+        }
+        initialCapacity = newSize;
+        return (Collection<Node>[])ArrayBuckets;
+    }
+
     @Override
     public void put(K key, V value) {
+
+        // 判断是否要resize
+        if( (double) size / initialCapacity >= loadFactor){
+            buckets = resizeBuckets(2*initialCapacity);
+        }
+
         Node node = getNode(key);
         if(node != null) {
             node.value = value;
@@ -145,31 +167,87 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public boolean containsKey(K key) {
-        return false;
+        Node node = getNode(key);
+        if(node == null) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public void clear() {
-
+        for(int i = 0; i < initialCapacity; i++) {
+            buckets[i].clear();
+        }
+        size = 0;
     }
 
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> keySet = new HashSet<>();
+        for(Collection<Node> bucket : buckets) {
+            for(Node node : bucket) {
+                keySet.add(node.key);
+            }
+        }
+        return keySet;
     }
 
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        int indexBucket = Math.floorMod(key.hashCode(), buckets.length);
+        for(Node node : buckets[indexBucket]) {
+            if(node.key.equals(key)) {
+                V value = node.value;
+                buckets[indexBucket].remove(node);
+                size--;
+                return value;
+            }
+        }
+        return null;
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        //返回一个Iterator对象
+        return new Iterator<K>() {
+            // 分别记录遍历到的bucket和node的下标
+            int indexBucket = 0;
+            int indexNode = 0;
+            @Override
+            public boolean hasNext() {
+                // 遍历所有的bucket
+                while(indexBucket < initialCapacity) {
+                    // 如果indexNode小于LinkedList的size，则说明该桶还有Node，返回true
+                    if(indexNode < buckets[indexBucket].size()) {
+                        return true;
+                    }
+                    // 否则indexBucket++，将indexNode重置为0
+                    else{
+                        indexBucket++;
+                        indexNode = 0;
+                    }
+                }
+                // 当所有的bucket都遍历完
+                return false;
+            }
+
+            @Override
+            public K next() {
+                Collection<Node> bucket = buckets[indexBucket];
+                indexBucket++;
+                Object[] list = bucket.toArray();
+                Node node = (Node)list[indexNode];
+                return node.key;
+
+            }
+        };
     }
 }
