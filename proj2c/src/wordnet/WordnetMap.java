@@ -2,7 +2,6 @@ package wordnet;
 
 import edu.princeton.cs.algs4.In;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
@@ -98,7 +97,7 @@ public class WordnetMap {
 		return hyponyms;
 	}
 
-	public TreeSet<String> getHyponysm(List<String> words) {
+	public TreeSet<String> getHyponysm(List<String> words){
 		TreeSet<String> hyponyms = new TreeSet<>();
 		String firstWord = words.getFirst();
 		hyponyms = getHyponysm(firstWord);

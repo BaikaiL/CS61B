@@ -26,7 +26,6 @@ public class TestMultiWordK0Hyponyms {
     private static final String HYPONYMS_FILE_SUBSET = "data/wordnet/hyponyms1000-subgraph.txt";
     private static final String SYNSETS_FILE_SUBSET = "data/wordnet/synsets1000-subgraph.txt";
 
-
     /** This is an example from the spec.*/
     @Test
     public void testOccurrenceAndChangeK0() {
@@ -41,5 +40,25 @@ public class TestMultiWordK0Hyponyms {
     }
 
     // TODO: Add more unit tests (including edge case tests) here.
+    @Test
+    public void testOnLargeFile() {
+        NgordnetQueryHandler studentHandler = AutograderBuddy.getHyponymsHandler(
+                VERY_SHORT_WORDS_FILE, TOTAL_COUNTS_FILE, LARGE_SYNSET_FILE, LARGE_HYPONYM_FILE);
+        List<String> words = List.of("video", "recording");
 
+        NgordnetQuery nq = new NgordnetQuery(words, 0, 0, 0, NgordnetQueryType.HYPONYMS);
+        String actual = studentHandler.handle(nq);
+        String expected = "[video, video_recording, videocassette, videotape]";
+        assertThat(actual).isEqualTo(expected);
+
+
+        NgordnetQueryHandler studentHandler2 = AutograderBuddy.getHyponymsHandler(
+                VERY_SHORT_WORDS_FILE, TOTAL_COUNTS_FILE, LARGE_SYNSET_FILE, LARGE_HYPONYM_FILE);
+        List<String> words2 = List.of("pastry", "tart");
+
+        NgordnetQuery nq2 = new NgordnetQuery(words2, 0, 0, 0, NgordnetQueryType.HYPONYMS);
+        String actual2 = studentHandler2.handle(nq2);
+        String expected2 = "[apple_tart, lobster_tart, quiche, quiche_Lorraine, tart, tartlet]";
+        assertThat(actual2).isEqualTo(expected2);
+    }
 }
