@@ -34,4 +34,51 @@ public class TestCommonAncestors {
     // TODO: Add more unit tests (including edge case tests) here.
 
     // TODO: Create similar unit test files for the k != 0 cases.
+    @Test
+    public void testSmallFileWords0() {
+        NgordnetQueryHandler studentHandler = AutograderBuddy.getHyponymsHandler(
+                WORDS_FILE, TOTAL_COUNTS_FILE, SMALL_SYNSET_FILE, SMALL_HYPONYM_FILE);
+        List<String> words = List.of("adjustment", "change");
+
+        NgordnetQuery nq = new NgordnetQuery(words, 2000, 2020, 0, NgordnetQueryType.ANCESTORS);
+        String actual = studentHandler.handle(nq);
+        String expected = "[alteration, event, happening, modification, natural_event, occurrence, occurrent]";
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void testLargeFileWordsNot0() {
+        NgordnetQueryHandler studentHandler = AutograderBuddy.getHyponymsHandler(
+                LARGE_WORDS_FILE, TOTAL_COUNTS_FILE, LARGE_SYNSET_FILE, LARGE_HYPONYM_FILE);
+        List<String> words = List.of("adjustment", "change");
+
+        NgordnetQuery nq = new NgordnetQuery(words, 2000, 2020, 5, NgordnetQueryType.ANCESTORS);
+        String actual = studentHandler.handle(nq);
+        String expected = "[act, action, change, event, process]";
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void testLargeFileWord0() {
+        NgordnetQueryHandler studentHandler = AutograderBuddy.getHyponymsHandler(
+                LARGE_WORDS_FILE, TOTAL_COUNTS_FILE, LARGE_SYNSET_FILE, LARGE_HYPONYM_FILE);
+        List<String> words = List.of("ai");
+
+        NgordnetQuery nq = new NgordnetQuery(words, 2000, 2020, 0, NgordnetQueryType.ANCESTORS);
+        String actual = studentHandler.handle(nq);
+        String expected = "[Bradypus_tridactylus, ai, animal, animate_being, animate_thing, beast, being, brute, chordate, craniate, creature, edentate, entity, eutherian, eutherian_mammal, fauna, living_thing, mammal, mammalian, object, organism, physical_entity, physical_object, placental, placental_mammal, sloth, three-toed_sloth, tree_sloth, unit, vertebrate, whole]";
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void testNoWord0() {
+        NgordnetQueryHandler studentHandler = AutograderBuddy.getHyponymsHandler(
+                WORDS_FILE, TOTAL_COUNTS_FILE, SMALL_SYNSET_FILE, SMALL_HYPONYM_FILE);
+        List<String> words = List.of("");
+
+        NgordnetQuery nq = new NgordnetQuery(words, 1900, 2020, 5, NgordnetQueryType.ANCESTORS);
+        String actual = studentHandler.handle(nq);
+        String expected = "[]";
+        assertThat(actual).isEqualTo(expected);
+    }
 }
