@@ -10,6 +10,11 @@ import java.awt.Font;
  * to, but be careful. We strongly recommend getting everything else working before
  * messing with this renderer, unless you're trying to do something fancy like
  * allowing scrolling of the screen or tracking the avatar or something similar.
+ *
+ *  用于渲染瓷砖的实用程序类。您无需修改此文件。
+ *  欢迎修改，但要小心。
+ *  我们强烈建议在使用该渲染器之前，先做好其他所有工作，
+ *  除非你想做一些花哨的事情，比如允许滚动屏幕或跟踪头像之类的。
  */
 public class TERenderer {
     private static final int TILE_SIZE = 16;
@@ -26,6 +31,12 @@ public class TERenderer {
      * on the right, 4 tiles blank on the bottom, and 1 tile blank on the top.
      * @param w width of the window in tiles
      * @param h height of the window in tiles.
+     *
+     *  w 窗口宽度（以瓦片为单位
+     *   h 窗口的高度（以瓷砖为单位）。
+     * 与其他初始化方法的功能相同。唯一不同的是，xOff 和 yOff 参数将改变 renderFrame 方法开始绘制的位置。
+     * 例如，如果您选择 w = 60、h = 30、xOff = 3、yOff = 4，然后使用 TETile[50][25] 数组调用 renderFrame，
+     * 那么渲染器将在左侧留出 3 个空白图块，右侧留出 7 个空白图块，底部留出 4 个空白图块，顶部留出 1 个空白图块。
      */
     public void initialize(int w, int h, int xOff, int yOff) {
         this.width = w;
@@ -54,6 +65,13 @@ public class TERenderer {
      * leave 10 tiles blank on the right side and 5 tiles blank on the top side. If
      * you want to leave extra space on the left or bottom instead, use the other
      * initializatiom method.
+     *
+     * 初始化 StdDraw 参数并启动 StdDraw 窗口。
+     * 如果传给 renderFrame 的 TETile[][] 数组小于此值，则会在框架的右边和顶边留下额外的空白。
+     * 例如，如果您选择 w = 60 和 h = 30，此方法将创建一个宽 60 平铺、高 30 平铺的窗口。
+     * 如果随后使用 TETile[50][25] 数组调用 renderFrame，则右侧将留出 10 个空白磁贴，顶部将留出 5 个空白磁贴。
+     * 如果您想在左侧或底部留出额外的空间，请使用另一个初始化方法
+     *
      * @param w width of the window in tiles
      * @param h height of the window in tiles.
      */
